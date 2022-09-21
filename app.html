@@ -8,8 +8,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1,user-scalable=0"/>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
 <link rel="stylesheet" href="https://unpkg.com/paginationjs@2.1.5/dist/pagination.css" />
-<link type="text/css" rel="stylesheet" href="/fonts/Fontawesome-pro/css/fontawesome.min.css" />
-<link type="text/css" rel="stylesheet" href="/fonts/Fontawesome-pro/css/all.css" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/web3fonts@1.0.0/css/fontawesome.min.css" />
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/web3fonts@1.0.0/css/all.min.css" />
 <link type="text/css" rel="stylesheet" href="/fonts/Nunito/fonts.css" />
 <link type="text/css" rel="stylesheet" href="/lib/jQuery/PluginStack/Wow-js/animate.css" />
 <link type="text/css" rel="stylesheet" href="/css/custom.css?v=4" />
@@ -29,6 +29,7 @@
 <script type="text/javascript" src="/lib/jQuery/PluginStack/Wow-js/wow.min.js?v=10"></script>
 <script type="text/javascript" src="/js/custom.js?v=202"></script>
 <script type="text/javascript" src="/networks-main.js?v=10"></script>
+<script type="text/javascript" src="/contract/abi.js?v=10"></script>
 <link rel="icon" href="/favicon/favicon-96x96.png" />
 <link rel="shortcut icon" href="/favicon/favicon-96x96.png" />
 <title>XDC Web3 Domains (.xdc)</title>
@@ -527,6 +528,7 @@ div[data-notify="container"] {
 					<div class="menu-close"><i class="fal fa-times-circle"></i></div>
 					<ul class="nav">
 						<li class="nav-item active"><a href="/">Home</a></li>
+						<li class="nav-item"><a href="/search">Bulk Search</a></li>
 						<li class="nav-item"><a href="/yourdomain">Find Your Domain</a></li>
 					</ul>
 				</div>
@@ -571,7 +573,7 @@ div[data-notify="container"] {
 					
 				</div>
 				<div class="warp-form-search" style='display:none;'>
-					<div class='text-right' style='display:none;'>
+					<div class='text-right'>
 						<span class='emoji-picker'>
 							<span class=''>Emoji Picker 🖐</span>
 							<span class='emoji-load' style='display: none;'><emoji-picker></emoji-picker></span>
@@ -612,6 +614,9 @@ div[data-notify="container"] {
 										<div class='result-price text-center'></div>
 									</div>
 								</div>
+								<div class="form-group">
+									<input type="text" class="form-control youraddress" placeholder="To (Recipient)" />
+								</div>
 								<span style="cursor: pointer; padding:15px; font-weight: bold; font-size: 17px;" class='btn btn-block btn-lg btn-success btn-buy'><i class="fas fa-spinner fa-spin" style="display:none;margin-right:5px;"></i>Mint Now </span>
 							</div>
 							<div style='display:none;' class="col-lg-5 col-md-5 col-sm-12 col-xs-12">
@@ -629,7 +634,7 @@ div[data-notify="container"] {
 				<div class="container">
 					<div class="mydomains">
 						<h4 class='strong' style="color: #000;">You have <span class='total-domains'></span> domains</h4>
-						<div class='text-right'><span style="cursor:pointer;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Refresh</span></div>
+						<div class='form-inline'><input type='text' placeholder="Enter keyword" class='form-control keyword' /><span style="cursor:pointer; margin-left: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Search</span><span style="cursor:pointer; margin-left: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Refresh</span></div>
 						<div class='loading text-center' style='display:none; color:#70d44b'><i class='fas fa-4x fa-spinner fa-spin'></i></div>
 						<div class='mydomain-show'></div>
 						<div class='mydomain-paging'><div class='paging'></div></div>
@@ -787,14 +792,14 @@ div[data-notify="container"] {
 		var metamask = "/logo/metamask.svg?v=1";
 		var xdcpay = "/logo/xdcpay.png?v=1";
 		
-		var argAdapterName = ['Scan QRCode','XDCPay - Unlock before connect','Support Metamask PC & Dcent dApp browser'];
+		var argAdapterName = ['WalletConnect - Scan QRCode','XDCPay - Unlock before connect','Support Metamask PC & Dcent dApp browser'];
 		var argAdapter = ['dcent', 'xdcpay', 'metamask'];
 		var argAdapterIcon = [dcent, xdcpay, metamask];
 		
 		var item = '';
 		var item = '';
 		$.each(argAdapter, function (i, adapter) {
-			item += "<li class='wallet-adapter-item text-center' data-adapter='" + adapter.toLowerCase() + "'><img src='" + argAdapterIcon[i] + "?v=1' /><span>" + argAdapterName[i] + "</span></li>";
+			item += "<li class='wallet-adapter-item text-center' data-adapter='" + adapter.toLowerCase() + "'><img src='" + argAdapterIcon[i] + "?v=1' /><span>" + argAdapterName[i] + "</span><br/><i style='display:none;' class='fas fa-circle-notch fa-spin'></i></li>";
 		});
 		var tmp = "<div class='select-wallet'>";
 		tmp += "<h3>Connect Wallet</h3>";
@@ -812,6 +817,8 @@ div[data-notify="container"] {
 		if (isConnection == true){
 			return;
 		}
+		
+		notify('alert-info', '<span class="text-info"><i class="fas fa-circle-notch fa-spin"></i> Connecting</span>');
 		
 		$('.tld').text('');
 		
@@ -894,7 +901,7 @@ div[data-notify="container"] {
 					}
 			  });
 
-			  var abi = await fetchABI();
+			  //var abi = await fetchABI();
 			
 			  try{
 				  contractFirst = new web3obj.eth.Contract(
@@ -1196,7 +1203,7 @@ div[data-notify="container"] {
 		objnew.key = 'avatar';
 		objnew.tokenId = tokenId;
 		objnew.base64 = base64;
-		objnew.host = "https://app.astr.domains";
+		objnew.host = "";
 		objnew.owner = owner;
 		
 		$.ajax({
@@ -1278,7 +1285,7 @@ div[data-notify="container"] {
 		var tokenId = obj.tokenId;
 		var to = obj.to;
 		var dialog = bootbox.dialog({
-			title: 'Comfirm transfer ' + domain,
+			title: 'Confirm transfer ' + domain,
 			message: '<p class="text-center">Transfer <strong>' + domain + '</strong> to <strong>' + to + '</strong><br/>Please wait while we do something... and do not close the browser.<br/><br/> <i class="fas fa-4x fa-spinner fa-spin"></i></p>',
 			closeButton: true,
 			className: 'modal-custom',
@@ -1556,7 +1563,7 @@ div[data-notify="container"] {
 			
 			var price5char = web3obj.utils.fromWei(_price5char);
 			
-			var lbldiscount = '<span class="discount" style="color:red; margin-left: 7px;">-20%</span>';
+			var lbldiscount = '<span class="discount" style="color:red; margin-left: 7px;"></span>';
 			
 			//var pricelist = '<ul class="list-group"><li class="level-item"><span class="level-label">2 characters</span><span class="level-price">' + price2char + ' ' + currentNetwork.nativeCurrency.symbol + '</span></li>';
 			var pricelist = '<ul class="list-group">';
@@ -1627,6 +1634,28 @@ div[data-notify="container"] {
 			}
 		}
 		
+		var youraddress = $('.youraddress').val();
+		
+		if (youraddress !== '')
+		{
+			if (web3obj.utils.isAddress(youraddress) == true)
+			{
+				youraddress = web3obj.utils.toXdcAddress(youraddress);
+			}
+				
+			var isAddress = web3obj.utils.isXdcAddress(youraddress);
+			if (isAddress == false){
+				bootbox.alert('You entered the wrong wallet format');
+				return;
+			}
+		}
+		
+		if (youraddress == '')
+		{
+			youraddress = currentAddress;
+		}
+		
+		
 		var _price;
 		
 		var _length =  domain.length;
@@ -1652,25 +1681,23 @@ div[data-notify="container"] {
 
 		var price = web3obj.utils.fromWei(_price);
 		
-		var dialog = bootbox.dialog({
-			title: 'Mint your domain',
-			message: '<p class="text-center">Please wait while we do something... and do not close the browser.<br/><br/> <i class="fas fa-4x fa-spinner fa-spin"></i></p>',
-			closeButton: true,
-			size: 'large',
-			onHide: function(e) {
-				myDomains(currentAddress, '');
-			} 
-		});
-		
 		var tldnodot = tld.replace('.','');
 		
-		//alert(tldnodot);
+		var dialog = bootbox.dialog({
+				title: 'Mint your domain',
+				message: '<p class="text-center">Please wait while we do something... and do not close the browser.<br/><br/> <i class="fas fa-4x fa-spinner fa-spin"></i></p>',
+				closeButton: true,
+				size: 'large',
+				onHide: function(e) {
+					myDomains(currentAddress, '');
+				} 
+			});
 		
-		web3obj.eth.sendTransaction({
+			web3obj.eth.sendTransaction({
 				from: currentAddress,
 				to: currentNetwork.contactAddress,
 				value: web3obj.utils.toWei('' + price + '', 'ether'),
-				data: contractFirst.methods.buyDomain(currentAddress, domain, tldnodot).encodeABI()
+				data: contractFirst.methods.buyDomain(youraddress, domain, tldnodot).encodeABI()
 			}, (err, transactionId) => {
 			  if  (err) {
 					dialog.init(function(){
@@ -1687,63 +1714,39 @@ div[data-notify="container"] {
 						}, 4000);
 					});
 				 }
-		});
+			});
 	};
+	
 	
 	const myDomainLoad = async (address, data) => {
 	
 		$('.mydomain-show').html('');
 		
 		$('.loading').show();
-		
-		var tokens = [];
 
-		for (i = 0; i < data.length; i++) 
-		{
-			var tokenId = await contractFirst.methods.tokenOfOwnerByIndex(address, data[i]).call();
-			try{
-				var domain = await contractFirst.methods._tokenURIs(tokenId).call();
-				var obj = new Object();
-				obj.owner = address;
-				obj.tokenId = tokenId;
-				obj.domain = domain;
-				tokens.push(obj);
-			}catch{}
-		};
-		
-		if (tokens.length > 0){
+		if (data.length > 0){
 		
 			$('.loading').hide();
 			
 			$('.warp-mydomains').show();
-			
-			const d = new Date();
-			
-			var t =d.getTime();
-			
-			$.each(tokens, function(index, obj){
-				//alert(obj.tokenId);
-				var endpoint = '/api/nftdomains/metadata/' + obj.domain;
-				$.getJSON(endpoint, function(result) {   
-					var name = result.name;
-					var image = result.image + '?t=' + t;
-					var symbol = result.symbol;
-					var btnlbl = 'Set Primary';
-					var isremove = "false";
 
-					if (name == domainReverse){
-						btnlbl = "Remove Primary";
-						isremove = "true";
-					}
-					
-					obj.image = image;
-					
-					var temp = "<div class='mydomain-item'><a target='_blank' href='" + image + "'><img style='width: 100%;' src='" + image + "' /></a>";
-					temp += "<div style='cursor:pointer; margin-top: 5px;' data-domain='" + obj.tokenId + "' class='btn btn-sm btn-outline-success btn-set-reverse'>" + btnlbl + "</div>";
-					temp += "<div style='cursor:pointer; margin-top: 5px; display:none;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-set-avatar'>Set Avatar</div>";
-					temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-send'>Send Domain</div>";
-					$('.mydomain-show').append(temp);
-				});
+			$.each(data, function(index, obj){
+				//alert(obj.tokenId);
+				var image = '/NFTDomains/xdc/' + obj.domain + '.png';
+				var name = obj.domain;
+				var btnlbl = 'Set Primary';
+				var isremove = "false";
+
+				if (name == domainReverse){
+					btnlbl = "Remove Primary";
+					isremove = "true";
+				}
+				obj.image = image;
+				var temp = "<div class='mydomain-item'><a target='_blank' href='" + image + "'><b>" + name + "</b></a>";
+				temp += "<div style='cursor:pointer; margin-top: 5px;' data-domain='" + obj.tokenId + "' class='btn btn-sm btn-outline-success btn-set-reverse'>" + btnlbl + "</div>";
+				temp += "<div style='cursor:pointer; margin-top: 5px; display:none;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-set-avatar'>Set Avatar</div>";
+				temp += "<div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-success btn-send'>Send Domain</div>";
+				$('.mydomain-show').append(temp);
 			});
 		}
 	};
@@ -1758,16 +1761,52 @@ div[data-notify="container"] {
 		
 		$('.total-domains').html(balance);
 		
-		var pageSize = 15;
-		var totalNumber = balance;
+		$('.loading').show();
+		
+		const arg = await contractFirst.methods.getDomainbyAddress(address).call();
+		
+		var domains =  arg.domains;
+		
+        var tokenIds = arg.tokenIds;
+		
 		var dataSource = [];
-		for (i = 0; i < balance; i++) {
-			dataSource.push(i);
+	
+		var keyword = $('.keyword').val().trim().toLowerCase();
+		
+		if (keyword.length > 0)
+		{
+			for (i = 0; i < domains.length; i++) 
+			{
+				var result = domains[i].indexOf(keyword);
+				if (result >= 0){
+					var obj = new Object();
+					obj.owner = address;
+					obj.tokenId = tokenIds[i];
+					obj.domain = domains[i];
+					dataSource.push(obj);
+				}
+			}
 		}
+		else
+		{
+			for (i = 0; i < domains.length; i++) 
+			{
+				var obj = new Object();
+				obj.owner = address;
+				obj.tokenId = tokenIds[i];
+				obj.domain = domains[i];
+				dataSource.push(obj);
+			}
+		}
+		
+		
+		
+		var pageSize = 20;
+		var totalNumber = dataSource.length;
 		
 		$('.paging').pagination({
 			dataSource: dataSource,
-			totalNumber: balance,
+			totalNumber: totalNumber,
 			pageSize: pageSize,
 			showPrevious: true,
 			showNext: true,

@@ -25,39 +25,30 @@
 <script type="text/javascript" src="/lib/jQuery/PluginStack/Wow-js/wow.min.js?v=10"></script>
 <script type="text/javascript" src="/js/custom.js?v=202"></script>
 <script type="text/javascript" src="/networks-main.js?v=40"></script>
-<script type="text/javascript" src="/contract/abi.js?v=10"></script>
 <link rel="icon" href="/favicon/favicon-96x96.png" />
 <link rel="shortcut icon" href="/favicon/favicon-96x96.png" />
 <title>XDC Web3 Domains (.xdc)</title>
 <meta name="description" content="First XDC Name Service - Own Your Blockchain Domains" />
 <style>
-body{
-	color: #000;
-}
-.txtdomain:focus {
-	box-shadow: inset 0 -1px 0 #FFF;
-}
-.warp-banner{
-	min-height: 500px;
-}
 .warp-search{
 	margin: 0 auto;
-}
-.btn-search{
-	color: #FFF!important;
 }
 .warp-result .text-success{
 	color: #003663!important;
 }
-.result-details .btn-success{
-	background-color: #003663!important;
-	border-color: #003663!important;
+.warp-form-search{
+	max-width: 100%;
 }
-.warp-mydomains .btn-outline-success{
-	border-color: #003663!important;
-	color: #003663!important;
+.form-search{
+	border-radius: 5px;
+    background: #fff;
+    border: 1px solid #2e19a7;
+	padding: 20px;
 }
-
+.form-search .txtdomain
+{
+	border-radius: 0px!important;
+}
 .warp-setavatar .btn-success {
 	background-color: #003663!important;
 	border-color: #003663!important;
@@ -66,6 +57,11 @@ body{
 	color: #003663!important;
 }
 
+.btn-outline-success
+{
+	border: 1px solid #003663!important;
+	color: #003663!important;
+}
 .loading {color: #003663!important;}
 
 .btn-outline-success:hover
@@ -166,7 +162,6 @@ body{
 .pricelist{
 	max-width: 400px;
 	margin: 0 auto;
-	color: #000;
 }
 .preview {
 	position: relative;
@@ -186,7 +181,6 @@ body{
 .result-select {
 	padding:10px;
 	margin: 0px auto;
-	color: #000;
 }
 
 .domain-item {
@@ -243,7 +237,6 @@ body{
 }
 .pricelistwarp{
 	background: #FFF;
-	color: #000;
 }
 .result-price{
 	padding:15px; font-size: 20px; font-weight: bold;
@@ -416,12 +409,6 @@ body{
         width: 600px;
         font-size: 14px;
     }
-	
-	
-.modal-custom .modal-dialog {
-        width: 500px;
-        font-size: 13px;
-    }
 
 div[data-notify="container"] { 
     width: auto; 
@@ -444,25 +431,6 @@ div[data-notify="container"] {
 	z-index: 9999;
 }
 
-.to_reverse {
-	margin-bottom: 10px;
-	border: 1px solid #DDD;
-	padding: 5px;
-}
-.nftpreview {
-	padding: 10px;
-	border: 1px solid #DDD;
-	border-radius: 5px;
-}
-.nftpreview img {
-	width: 100px;
-	margin-right: 7px;
-}
-
-.nftpreview span {
-	font-weight: bold
-}
-
 </style>
 </head>
 <body>
@@ -480,7 +448,6 @@ div[data-notify="container"] {
 					<ul class="nav">
 						<li class="nav-item active"><a data-id="" href="/">Home</a></li>
 						<li class="nav-item"><a href="/app">Launch App</a></li>
-						<li class="nav-item"><a href="/search">Bulk Search</a></li>
 						<li class="nav-item"><a href="/yourdomain">Find Your Domain</a></li>
 					</ul>
 				</div>
@@ -493,33 +460,36 @@ div[data-notify="container"] {
 	</div>
 </div>
 <div class="warp-banner text-center">
+	<div class="banner-gradient"></div>
 	<div class="warp-search">
-		<div class="banner-nofix" style="z-index: 999; position: relative;">
+		<div class="banner-nofix">
 			<div class="container">
-				<div class="warp-form-search" style=''>
+				<div class="warp-form-search">
 					<div class="form-search">
-						<div class="input-group">
-							<input type="text" class="form-control form-control-lg txtdomain" placeholder="Enter your wallet address"/>
-							<div class="input-group-append">
-								<span class='tld'>.</span>
-								<span class="btn btn-default btn-success btn-outline-secondary btn-search" style="cursor:pointer;"><i class="fas fa-spinner fa-spin" style="display:none;margin-right:5px;"></i>Search</span>
+							<div class="input-group">
+								<textarea class="form-control form-control-lg txtdomain" style="height:200px; border: 1px solid #DDD; padding:10px; margin-bottom: 15px;" placeholder="Search domains"></textarea>
 							</div>
-						</div>
-					</div>
+							<div class='small tex-right' style="padding-bottom:5px; margin-bottom:10px; text-align: right;">Enter an xdc domain for each line</div>
+							<div style="padding-bottom:5px; margin-bottom:20px;"><span class="btn btn-default btn-success btn-outline-secondary btn-search" style="cursor:pointer;border-radius: 6px"><i class="fas fa-spinner fa-spin" style="display:none;margin-right:5px;"></i>Check</span></div>
+					  </div>
 				</div>
 			</div>
 		</div>
-		<div class="warp-mydomains" style="display:none; margin-top: 30px;">
+		<div class="warp-result">
 				<div class="container">
-					<div class="mydomains">
-						<h4 class='strong' style="color: #000;">You have <span class='total-domains'></span> domains</h4>
-						<div class='form-group'><div class='form-inline'><input type='text' placeholder="Enter keyword" class='form-control keyword' /><span style="cursor:pointer; margin-left: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Search</span><span style="cursor:pointer; margin-left: 5px;" class='btn btn-sm btn-outline-success btn-mydomain-refresh'>Refresh</span></div></div>
-						<div class='loading text-center' style='display:none; color:#70d44b'><i class='fas fa-4x fa-spinner fa-spin'></i></div>
-						<div class='mydomain-show'></div>
-						<div class='mydomain-paging'><div class='paging'></div></div>
+					<div class="result-search" style="display:none;">
+					<div class='result-select'></div>
+					<div class="result-common" style="display:none;">
+							<span class='result-logo'></span>
+							<span class='result-domain'></span>
+							<span class='result-status'>
+								<span class='result-chain' style='display:none;'></span>
+								<span class='result-statustext'></span>
+							</span>
 					</div>
 				</div>
-	       </div>
+			   </div>
+		</div>
 	</div>
 </div>
 <div class="warp-footer">
@@ -536,20 +506,35 @@ div[data-notify="container"] {
 		</div>
 	</div>
 </div>
+<div class="back-to-top">
+	<i class="far fa-angle-up"></i>
+</div>
 <script type="text/javascript">
 
 	var currentNetwork;
 	
 	var contractFirst;
 	
+	var currentAddress;
+	
+	var domainReverse = '';
+	
 	var clickenble = true;
 	
 	var isConnection = false;
-	
-	var web3obj;
 
 	window.addEventListener('load', async () => {
 		await connect();
+    });
+	
+	$(document).on('keyup', '.txtdomain', function(){
+		//var str = $(this).val().trim().toLowerCase();
+		//var lines = str.split("\n");
+		//var temp = '';
+		//for (var i = 0; i < lines.length; i++) {
+		//	temp += fixDomain(lines[i]) + '\n';
+		//};
+		//$(this).val(temp);
     });
 	
 	const connect =  async () => {
@@ -557,12 +542,11 @@ div[data-notify="container"] {
 			return;
 		}
 		
-		web3obj = new Web3(new Web3.providers.HttpProvider('https://rpc1.xinfin.network'));
+		window.web3 = new Web3(new Web3.providers.HttpProvider('https://rpc.xinfin.network'));
 		
 		try {
-			  //await web3obj.eth.requestAccounts();
-			   
-			  const chainId = await web3obj.eth.net.getId();
+
+			  const chainId = await web3.eth.net.getId();
 			  
 			  currentNetwork = getObjects(networks, "chainId", chainId)[0];
 			  
@@ -588,14 +572,16 @@ div[data-notify="container"] {
 					}
 			  });
 
+			  var abi = await fetchABI();
+			
 			  try{
-				  contractFirst = new web3obj.eth.Contract(
+				  contractFirst = new web3.eth.Contract(
 								  abi,
 								  currentNetwork.contactAddress
 				  );
 			  }catch(e){
 				notify('danger', '<span class="text-danger">' + e.toString() + '</span>');
-				return;
+				//return;
 			  }
 			  
 			  if (contractFirst == null)
@@ -604,14 +590,16 @@ div[data-notify="container"] {
 					return;
 			  }
 			  
-			  notify('alert-success', 'Successfully connected your wallet');
-			  
 			  preInit();
 			  
 			  isConnection = true;
 			  
 		} catch (err) {
 			notify('alert-danger', '<span class="text-danger">Error: ' + err.toString() + '</span>');
+			
+			$('.btn-connect-wallet i.fa-spin').hide();
+		
+			$('.btn-connect-wallet').removeAttr('disabled');
 		}
 	};
 	
@@ -624,30 +612,112 @@ div[data-notify="container"] {
 		return abi;
 	};
 	
-	const myDomainLoad = async (address, data) => {
+	
+	const searchDomainTLD = async (domain) => {
+		
+		var tlds = [".xdc"];
+		
+		var temp = '';
+		
+		var domains = domain.split("\n");
+				
+		for (i = 0; i < domains.length; i++) {
+		
+			var domainitem = fixDomain(domains[i]);
+				
+			var tld = tlds[0];
+
+			var fulldomain = fullDomain(domainitem, tlds[0]);
+				
+			var owner = '';
+				
+			try {
+					owner = await contractFirst.methods.getOwner(fulldomain).call();
+			} catch (e) {
+
+			}
+			var status = 'Unavailable';
+			var css = 'text-danger';
+			var icon = 'fa-ban';
+				
+			var isBook = false;
+				
+			var isBookingListActive = await contractFirst.methods._isBookingListActive().call();
+			if (isBookingListActive == true){
+				var chkInBookingList = await contractFirst.methods.chkInBookingList(domainitem).call();
+				if (chkInBookingList == true)
+				{
+					isBook = true;
+				}
+			}
+			var buy = '#';
+			if (owner == '' && isBook == false)
+			{
+				status = 'Available';
+				css = 'text-success';
+				icon = 'fa-check-circle';
+				buy = '/buy';
+			}
+				
+			temp += "<div data-domain='" + domainitem + "' data-tld='" + tld + "' class='domain-item " + css + "'><a class='" + css + "' href='" + buy + "'><span class='domain-item-name'>" + fulldomain + "</span></a><span class='domain-item-status'><i class='fas " + icon + "'></i></span></div>";
+		};
+		
+		$('.result-select').html(temp);
+		
+		$('.result-search').show();
+	};
+	
+	const myDomainLoad = async (address, data, refresh) => {
 	
 		$('.mydomain-show').html('');
+		
+		$('.loading').show();
+		
+		var tokens = [];
 
-		if (data.length > 0){
+		for (i = 0; i < data.length; i++) 
+		{
+			var tokenId = await contractFirst.methods.tokenOfOwnerByIndex(address, data[i]).call();
+			try{
+				var domain = await contractFirst.methods._tokenURIs(tokenId).call();
+				var obj = new Object();
+				obj.owner = address;
+				obj.tokenId = tokenId;
+				obj.domain = domain;
+				tokens.push(obj);
+			}catch{}
+		};
+		
+		if (tokens.length > 0){
 		
 			$('.loading').hide();
 			
 			$('.warp-mydomains').show();
 			
 			const d = new Date();
+			var t =d.getTime();
 			
-			var t = d.getTime();
-			
-			$.each(data, function(index, obj){
-				var image = '/NFTDomains/xdc/' + obj.domain + '.png';
-				var name = obj.domain;
-				var temp = "<div class='mydomain-item'><a target='_blank' href='" + image + "'><strong style='font-weight: bold;'>" + name + "</strong></a><div class='mydomain-item-tokenId'>tokenId: " + obj.tokenId + "</div></div>";
-				$('.mydomain-show').append(temp);
+			$.each(tokens, function(index, obj){
+				var endpoint = '/api/nftdomains/metadata/' + obj.domain;
+				$.getJSON(endpoint, function(result) {   
+					var name = result.name;
+					var image = result.image + '?t=' + t;
+					var symbol = result.symbol;
+					var btnlbl = 'Set Primary';
+					var isremove = "false";
+					if (name == domainReverse){
+						btnlbl = "Remove Primary";
+						isremove = "true";
+					}
+					
+					var temp = "<div class='mydomain-item'><a target='_blank' href='" + image + "'><img style='width: 100%;' src='" + image + "' /></a><div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "'title='Remove NFT Avatar' class='btn btn-remove-avatar'><i class='fas fa-trash-alt'></i></div><div style='cursor:pointer; margin-top: 5px;' data-remove='" + isremove + "' data-domain='" + name + "' class='btn btn-sm btn-outline-success btn-set-reverse'>" + btnlbl + "</div><div style='cursor:pointer; margin-top: 5px;' data-obj='" + JSON.stringify(obj) + "' class='btn btn-sm btn-outline-primary btn-set-avatar'>Set Avatar</div></div>"
+					$('.mydomain-show').append(temp);
+				});
 			});
 		}
 	};
 
-	const myDomains = async (address) => {
+	const myDomains = async (address, refresh) => {
 	
 		$('.warp-mydomains').show();
 		
@@ -657,90 +727,50 @@ div[data-notify="container"] {
 		
 		$('.total-domains').html(balance);
 		
-		$('.loading').show();
-		
-		const arg = await contractFirst.methods.getDomainbyAddress(address).call();
-		
-		var domains =  arg.domains;
-		
-        var tokenIds = arg.tokenIds;
-		
+		var pageSize = 15;
+		var totalNumber = balance;
 		var dataSource = [];
-	
-		var keyword = $('.keyword').val().trim().toLowerCase();
-		
-		if (keyword.length > 0)
-		{
-			for (i = 0; i < domains.length; i++) 
-			{
-				var result = domains[i].indexOf(keyword);
-				if (result >= 0){
-					var obj = new Object();
-					obj.owner = address;
-					obj.tokenId = tokenIds[i];
-					obj.domain = domains[i];
-					dataSource.push(obj);
-				}
-			}
+		for (i = 0; i < balance; i++) {
+			dataSource.push(i);
 		}
-		else
-		{
-			for (i = 0; i < domains.length; i++) 
-			{
-				var obj = new Object();
-				obj.owner = address;
-				obj.tokenId = tokenIds[i];
-				obj.domain = domains[i];
-				dataSource.push(obj);
-			}
-		}
-		
-		
-		
-		var pageSize = 20;
-		var totalNumber = dataSource.length;
 		
 		$('.paging').pagination({
 			dataSource: dataSource,
-			totalNumber: totalNumber,
+			totalNumber: balance,
 			pageSize: pageSize,
 			showPrevious: true,
 			showNext: true,
-			className: 'paginationjs-pages justify-content-center',
+			className: 'paginationjs-theme-blue paginationjs-big',
 			showGoInput: true,
 			showGoButton: true,
 			callback: function(data, pagination) {
-				myDomainLoad(address, data);
+				myDomainLoad(address, data, refresh);
 			}
 		});
 	};
 	
 	const preInit = () => 
 	{
-		 $(document).on('click', '.btn-search', async function()
-		 {
-				var address = $('.txtdomain').val();
-				
-				if (address == ''){
+		  $(document).on('click', '.btn-search', async function(){
+				var domain = $('.txtdomain').val().trim().toLowerCase();
+
+				if (domain == ''){
+					$('.result-search').hide();
+					return;
+				}
+
+				if (domain.length < 2){
+					$('.result-search').hide();
+					notify('danger', '<span class="text-danger">Domain requires at least 2 characters</span>');
 					return;
 				}
 				
 				$('.btn-search i').show();
 				
-				await myDomains(address,'');
+				await searchDomainTLD(domain);
 				
 				$('.btn-search i').hide();
 
-		  });
-		  
-		  $(document).on('click', '.btn-mydomain-refresh', function(e){
-				var address = $('.txtdomain').val();
-				
-				if (address == ''){
-					return;
-				}
-				
-				myDomains(address,'');
 		  });
     };
 	
@@ -757,6 +787,28 @@ div[data-notify="container"] {
 			}
 		});
 	};
+			
+	
+	function copyToClipboard(text) {
+	  var $temp = $("<input>");
+	  $("body").append($temp);
+	  $temp.val(text).select();
+	  document.execCommand("copy");
+	  $temp.remove();
+	}
+	
+	function fullDomain(domain, tld)
+	{
+		domain = fixDomain(domain) + tld;
+		return domain;
+	}
+	
+	function fixDomain(domain)
+	{
+		//	_char = _char.replace(/\./g, '').replace(/\s+/g, '').replace(/[^A-Za-z0-9\-]/gi, '').replace(/,/g, '');
+		const domainfix = domain.replace(/\./g, '').replace(/\s+/g, '').replace(/[`~!@#$%^&*()_|+\=?;:'",.<>\{\}\[\]\\\/]/gi, '').replace(/,/g, '');
+		return domainfix;
+	}
 </script>
 
 </body>
