@@ -32,6 +32,7 @@
 <script type="text/javascript" src="/contract/abi.js?v=10"></script>
 <link rel="icon" href="/favicon/favicon-96x96.png" />
 <link rel="shortcut icon" href="/favicon/favicon-96x96.png" />
+<link rel="manifest" href="/multisig/subscription/manifest.json" />
 <title>XDC Web3 Domains (.xdc)</title>
 <meta name="description" content="First XDC Name Service - Own Your Blockchain Domains" />
 <style>
@@ -426,6 +427,11 @@ body{
         width: 500px;
         font-size: 13px;
     }
+	
+.modal-custom-lg .modal-dialog {
+        width: 600px;
+        font-size: 12px;
+    }
 
 div[data-notify="container"] { 
     width: auto; 
@@ -471,13 +477,19 @@ div[data-notify="container"] {
         background: #FFF;
         box-shadow: 0 8px 20px rgb(0 0 0 / 60%);
     }
+	
+.wallet-ui .modal-dialog {
+        width: 800px;
+		height: 350px;
+        font-size: 12px;
+    }
 
     .wallet-ui .list-group {
         margin: 20px 0 20px 0;
         padding: 0;
         width: 100%;
         display: grid;
-		grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+		grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
 		list-style: none;
     }
 
@@ -545,7 +557,7 @@ div[data-notify="container"] {
 		<div class="banner-nofix" style="z-index: 999; position: relative;">
 			<div class="container">
 				<div class="box" style="text-align:center; margin: 0 auto; margin-bottom: 30px;">
-					<div style="margin: 0 auto; box-sizing: border-box; padding: 12px; border: 1px solid #ced4da; width: 400px; border-radius: 8px; background: #f8f9fabd;color: #212529;">
+					<div style="margin: 0 auto; box-sizing: border-box; padding: 12px; border: 1px solid #ced4da; width: 350px; border-radius: 8px; background: #f8f9fabd;color: #212529; font-size: 12px;">
 						<a style='font-weight: bold;' target='_blank' href='https://explorer.xinfin.network/tokens/xdc295a7ab79368187a6cd03c464cfaab04d799784e'>Contract Address (Verified): xdc295a7ab79368187a6cd03c464cfaab04d799784e</a>
 					</div>
 				</div>
@@ -788,18 +800,20 @@ div[data-notify="container"] {
 	
 	const selectWallet = async() => 
 	{
+		var onto = "/logo/onto.svg";
 		var dcent = "/logo/dcent.svg";
 		var metamask = "/logo/metamask.svg?v=1";
+		var nabox = "/logo/nabox.png?v=4";
 		var xdcpay = "/logo/xdcpay.png?v=1";
 		
-		var argAdapterName = ['WalletConnect - Scan QRCode','XDCPay - Unlock before connect','Support Metamask PC & Dcent dApp browser'];
-		var argAdapter = ['dcent', 'xdcpay', 'metamask'];
-		var argAdapterIcon = [dcent, xdcpay, metamask];
+		var argAdapterName = ['Dcent - Scan QRCode', 'XDCPay - Unlock first', 'OntoWallet Extension', 'Nabox Wallet Plugin', 'Metamask PC & Dcent mobile'];
+		var argAdapter = ['dcent', 'xdcpay', 'onto', 'nabox', 'metamask'];
+		var argAdapterIcon = [dcent, xdcpay, onto, nabox, metamask];
 		
 		var item = '';
 		var item = '';
 		$.each(argAdapter, function (i, adapter) {
-			item += "<li class='wallet-adapter-item text-center' data-adapter='" + adapter.toLowerCase() + "'><img src='" + argAdapterIcon[i] + "?v=1' /><span>" + argAdapterName[i] + "</span><br/><i style='display:none;' class='fas fa-circle-notch fa-spin'></i></li>";
+			item += "<li class='wallet-adapter-item text-center' data-adapter='" + adapter.toLowerCase() + "'><img src='" + argAdapterIcon[i] + "?v=1' /><span style='font-size: 11px;' class='wallet-adapter-item-name'>" + argAdapterName[i] + "</span></li>";
 		});
 		var tmp = "<div class='select-wallet'>";
 		tmp += "<h3>Connect Wallet</h3>";
@@ -851,6 +865,16 @@ div[data-notify="container"] {
 			web3obj = new Web3(window.xdc);
 		}
 		
+		if (adapter == 'nabox'){
+			web3obj = new Web3(window.NaboxWallet);
+			await web3obj.eth.requestAccounts();
+		}
+		
+		if (adapter == 'onto')
+		{
+			web3obj = new Web3(window.onto);
+			await web3obj.eth.requestAccounts();
+		}
 		if (adapter == 'dcent'){
 			var WalletConnectProvider = window.WalletConnectProvider.default;
 			connector = new WalletConnectProvider({
@@ -1439,7 +1463,11 @@ div[data-notify="container"] {
 			
 			//$('.result-price').text('Price: ' + price + ' ' + currentNetwork.nativeCurrency.symbol + '/' + _char);
 			
-			$('.result-price').text('Price: ' + price + ' ' + currentNetwork.nativeCurrency.symbol + '');
+			var currentprice = 'Your domain: ' + fulldomain + '<br/>List Price: 200 ' + currentNetwork.nativeCurrency.symbol;
+			
+			currentprice += '<br/><span style="color: red;">Happy Halloween (-20%): ' + price +  ' ' + currentNetwork.nativeCurrency.symbol + '</span>';
+			
+			$('.result-price').html(currentprice);
 			
 			$('.result-details').show();
 		}
@@ -1574,7 +1602,11 @@ div[data-notify="container"] {
 			
 			$('.pricelist').html(pricelist);
 			
-			$('.result-price').html(fulldomain + ' = ' + price + ' ' + currentNetwork.nativeCurrency.symbol + lbldiscount);
+			var currentprice = 'Your domain: ' + fulldomain + '';
+			
+			currentprice += '<br/><span style="">Price: ' + price +  ' ' + currentNetwork.nativeCurrency.symbol + '</span>';
+			
+			$('.result-price').html(currentprice);
 			
 			$('.btn-buy').attr('data-domain', domain).attr('data-tld', tld);
 			
